@@ -4,23 +4,216 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SustentaAgro | Rastreabilidade de Alimentos</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- ESTILOS GLOBAIS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7f9f6;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding-top: 80px; /* Espaço para o cabeçalho fixo */
+        }
+
+        /* --- CABEÇALHO MELHORADO --- */
+        header {
+            background-color: #2e7d32;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- MENUS DE NAVEGAÇÃO (DESKTOP) --- */
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background-color: #1b5e20;
+            color: #a5d6a7;
+        }
+
+        /* --- BOTÃO HAMBÚRGUER --- */
+        .hamburger {
+            display: none; /* Escondido no computador */
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 0;
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            border-radius: 3px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center;
+        }
+
+        /* Animação do Hambúrguer para o "X" */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        /* --- SEÇÕES DE CONTEÚDO --- */
+        .hero, .about-section, .contact-section {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero { 
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9); 
+        }
+        .hero h1 { font-size: 36px; color: #1b5e20; margin-bottom: 15px; }
+        .hero p { max-width: 600px; margin: 0 auto; font-size: 18px; color: #455a64; }
+
+        .about-section h2, .contact-section h2 { color: #2e7d32; margin-bottom: 15px; font-size: 28px; }
+        .about-section p, .contact-section p { max-width: 700px; margin: 0 auto; color: #546e7a; font-size: 16px; }
+
+        .search-section {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 40px 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .search-section h2 { color: #2e7d32; margin-bottom: 10px; }
+        .search-section p { font-size: 14px; color: #78909c; margin-bottom: 25px; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+
+        input { flex: 1; padding: 14px; border: 2px solid #cfd8dc; border-radius: 6px; font-size: 16px; outline: none; transition: border 0.3s; }
+        input:focus { border-color: #2e7d32; }
+        
+        .search-box button { background-color: #2e7d32; color: white; border: none; padding: 0 25px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.2s; }
+        .search-box button:hover { background-color: #1b5e20; }
+
+        /* --- CARTÃO DE RESULTADOS --- */
+        .result-card { background: #f1f8e9; border-left: 6px solid #2e7d32; padding: 25px; border-radius: 6px; text-align: left; margin-top: 25px; animation: fadeIn 0.4s ease-out; }
+        .result-card h3 { color: #1b5e20; margin-bottom: 15px; }
+        .result-card ul { list-style: none; }
+        .result-card li { margin-bottom: 10px; font-size: 16px; border-bottom: 1px dashed #c8e6c9; padding-bottom: 5px; }
+        .result-card li:last-child { border-bottom: none; }
+
+        .error { background: #ffebee; border-left-color: #c62828; color: #c62828; }
+        .hidden { display: none; }
+
+        footer { text-align: center; padding: 25px; background-color: #263238; color: #cfd8dc; margin-top: 60px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVIDADE (CELULARES) --- */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex; /* Exibe o botão hambúrguer */
+            }
+
+            .nav-menu {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: -300px; /* Escondido acima da tela inicialmente */
+                left: 0;
+                width: 100%;
+                background-color: #2e7d32;
+                padding: 20px;
+                gap: 10px;
+                box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+                transition: all 0.4s ease-in-out;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            /* Quando o menu hambúrguer for clicado, esta classe aplica o efeito visual */
+            .nav-menu.open {
+                top: 68px; /* Move para baixo do cabeçalho */
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .nav-menu a {
+                padding: 12px;
+                text-align: center;
+                border-bottom: 1px solid #388e3c;
+            }
+            .nav-menu a:last-child { border-bottom: none; }
+            
+            .hero h1 { font-size: 28px; }
+            .search-box { flex-direction: column; }
+            .search-box button { padding: 14px; }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Cabeçalho Melhorado -->
+    <!-- Cabeçalho -->
     <header>
         <div class="header-container">
             <div class="logo">🌱 SustentaAgro</div>
             
-            <!-- Botão Hambúrguer (Visível apenas no celular) -->
-            <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu">
+            <!-- Botão Hambúrguer Interativo -->
+            <button class="hamburger" id="hamburger-btn">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
 
-            <!-- Menu de Navegação com 4 Itens -->
+            <!-- 4 Menus de Navegação -->
             <nav class="nav-menu" id="nav-menu">
                 <a href="#inicio">Início</a>
                 <a href="#sobre">Sobre Nós</a>
@@ -31,19 +224,22 @@
     </header>
 
     <main>
+        <!-- Seção 1: Início -->
         <section id="inicio" class="hero">
             <h1>Do campo à sua mesa com total transparência</h1>
-            <p>Garantimos a origem, qualidade e sustentabilidade de cada alimento que você consome através da tecnologia blockchain.</p>
+            <p>Garantimos a origem, qualidade e sustentabilidade de cada alimento que você consome através da tecnologia de rastreabilidade.</p>
         </section>
 
+        <!-- Seção 2: Sobre Nós -->
         <section id="sobre" class="about-section">
-            <h2>Por que rastrear?</h2>
-            <p>A rastreabilidade permite conhecer o caminho do alimento desde o plantio até a gôndola, garantindo segurança alimentar e apoiando produtores responsáveis.</p>
+            <h2>Por que a rastreabilidade importa?</h2>
+            <p>A rastreabilidade permite mapear todo o caminho percorrido pelo alimento, desde o plantio da semente, colheita até a entrega nos supermercados. Isso garante conformidade com regras sanitárias e combate o desperdício.</p>
         </section>
 
+        <!-- Seção 3: Rastrear Lote -->
         <section id="rastrear" class="search-section">
             <h2>Consulte a Origem do Alimento</h2>
-            <p>Insira o código do lote impresso na embalagem (Ex: <strong>LOTE123</strong> ou <strong>LOTE456</strong>):</p>
+            <p>Insira o código do lote impresso na embalagem (Teste com: <strong>LOTE123</strong> ou <strong>LOTE456</strong>):</p>
             
             <div class="search-box">
                 <input type="text" id="batch-input" placeholder="Digite o código do lote...">
@@ -53,9 +249,10 @@
             <div id="result-container" class="result-card hidden"></div>
         </section>
 
+        <!-- Seção 4: Contato -->
         <section id="contato" class="contact-section">
             <h2>Fale Conosco</h2>
-            <p>Dúvidas sobre o seu alimento? Envie um e-mail para: suporte@sustentaagro.com</p>
+            <p>Ficou com alguma dúvida sobre nosso sistema ou quer homologar sua fazenda? Entre em contato pelo e-mail: contato@sustentaagro.com</p>
         </section>
     </main>
 
@@ -63,6 +260,80 @@
         <p>&copy; 2026 SustentaAgro - Tecnologia e Segurança Alimentar.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- LÓGICA JAVASCRIPT INTEGRADA -->
+    <script>
+        // --- CONTROLE DO MENU HAMBÚRGUER ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+            hamburgerBtn.classList.toggle('active');
+        });
+
+        // Fecha o menu móvel ao clicar em qualquer um dos 4 links
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('open');
+                hamburgerBtn.classList.remove('active');
+            });
+        });
+
+        // --- SISTEMA DE BUSCA DE ALIMENTOS ---
+        const database = {
+            "LOTE123": {
+                produto: "Tomate Orgânico (Bandeja 500g)",
+                produtor: "Sítio Primavera - Mogi das Cruzes/SP",
+                colheita: "18/05/2026",
+                transporte: "Logística Verde Terrestre (Refrigerado)",
+                certificado: "Selo Orgânico Brasil Certificado"
+            },
+            "LOTE456": {
+                produto: "Alface Crespa Hidropônica",
+                produtor: "Chácara Vale Verde - Atibaia/SP",
+                colheita: "19/05/2026",
+                transporte: "Distribuição Direta Expressa",
+                certificado: "Livre de Agrotóxicos Nível A"
+            }
+        };
+
+        const searchBtn = document.getElementById('search-btn');
+        const batchInput = document.getElementById('batch-input');
+        const resultContainer = document.getElementById('result-container');
+
+        searchBtn.addEventListener('click', () => {
+            const inputCode = batchInput.value.trim().toUpperCase();
+
+            resultContainer.classList.add('hidden');
+            resultContainer.classList.remove('error');
+
+            if (inputCode === "") {
+                alert("Por favor, digite um código de lote.");
+                return;
+            }
+
+            if (database[inputCode]) {
+                const info = database[inputCode];
+                resultContainer.innerHTML = `
+                    <h3>🌾 Alimento Localizado!</h3>
+                    <ul>
+                        <li><strong>Produto:</strong> ${info.produto}</li>
+                        <li><strong>Origem/Produtor:</strong> ${info.produtor}</li>
+                        <li><strong>Data de Colheita:</strong> ${info.colheita}</li>
+                        <li><strong>Logística:</strong> ${info.transporte}</li>
+                        <li><strong>Certificação:</strong> ${info.certificado}</li>
+                    </ul>
+                `;
+            } else {
+                resultContainer.classList.add('error');
+                resultContainer.innerHTML = `
+                    <h3>❌ Lote não encontrado</h3>
+                    <p>Não encontramos informações para o código <strong>${inputCode}</strong>. Verifique o código e tente novamente.</p>
+                `;
+            }
+
+            resultContainer.classList.remove('hidden');
+        });
+    </script>
 </body>
 </html>
