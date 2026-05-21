@@ -1,11 +1,45 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SustentaAgro | Rastreabilidade de Alimentos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
+    <header>
+        <div class="logo">🌱 SustentaAgro</div>
+        <nav>
+            <a href="#sobre">Sobre</a>
+            <a href="#rastrear">Rastrear</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="sobre" class="hero">
+            <h1>Do campo à sua mesa com total transparência</h1>
+            <p>Garantimos a origem, qualidade e sustentabilidade de cada alimento que você consome através da tecnologia blockchain.</p>
+        </section>
+
+        <section id="rastrear" class="search-section">
+            <h2>Consulte a Origem do Alimento</h2>
+            <p>Insira o código do lote impresso na embalagem (Ex: <strong>LOTE123</strong> ou <strong>LOTE456</strong>):</p>
+            
+            <div class="search-box">
+                <input type="text" id="batch-input" placeholder="Digite o código do lote...">
+                <button id="search-btn">Buscar Origem</button>
+            </div>
+
+            <!-- Onde o JavaScript vai exibir o resultado -->
+            <div id="result-container" class="result-card hidden"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SustentaAgro - Tecnologia e Segurança Alimentar.</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
