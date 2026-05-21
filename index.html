@@ -8,18 +8,37 @@
 </head>
 <body>
 
+    <!-- Cabeçalho Melhorado -->
     <header>
-        <div class="logo">🌱 SustentaAgro</div>
-        <nav>
-            <a href="#sobre">Sobre</a>
-            <a href="#rastrear">Rastrear</a>
-        </nav>
+        <div class="header-container">
+            <div class="logo">🌱 SustentaAgro</div>
+            
+            <!-- Botão Hambúrguer (Visível apenas no celular) -->
+            <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Menu de Navegação com 4 Itens -->
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#inicio">Início</a>
+                <a href="#sobre">Sobre Nós</a>
+                <a href="#rastrear">Rastrear Lote</a>
+                <a href="#contato">Contato</a>
+            </nav>
+        </div>
     </header>
 
     <main>
-        <section id="sobre" class="hero">
+        <section id="inicio" class="hero">
             <h1>Do campo à sua mesa com total transparência</h1>
             <p>Garantimos a origem, qualidade e sustentabilidade de cada alimento que você consome através da tecnologia blockchain.</p>
+        </section>
+
+        <section id="sobre" class="about-section">
+            <h2>Por que rastrear?</h2>
+            <p>A rastreabilidade permite conhecer o caminho do alimento desde o plantio até a gôndola, garantindo segurança alimentar e apoiando produtores responsáveis.</p>
         </section>
 
         <section id="rastrear" class="search-section">
@@ -31,8 +50,12 @@
                 <button id="search-btn">Buscar Origem</button>
             </div>
 
-            <!-- Onde o JavaScript vai exibir o resultado -->
             <div id="result-container" class="result-card hidden"></div>
+        </section>
+
+        <section id="contato" class="contact-section">
+            <h2>Fale Conosco</h2>
+            <p>Dúvidas sobre o seu alimento? Envie um e-mail para: suporte@sustentaagro.com</p>
         </section>
     </main>
 

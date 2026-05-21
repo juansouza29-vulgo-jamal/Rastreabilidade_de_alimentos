@@ -1,4 +1,24 @@
-// Base de dados simulada de alimentos rastreados
+// --- SISTEMA DO MENU HAMBÚRGUER ---
+const hamburgerBtn = document.getElementById('hamburger-btn');
+const navMenu = document.getElementById('nav-menu');
+
+hamburgerBtn.addEventListener('click', () => {
+    // Abre ou fecha a lista de menus no celular
+    navMenu.classList.toggle('open');
+    // Faz os traços do botão virarem um "X"
+    hamburgerBtn.classList.toggle('active');
+});
+
+// Fecha o menu automaticamente ao clicar em qualquer item dele (melhor usabilidade)
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('open');
+        hamburgerBtn.classList.remove('active');
+    });
+});
+
+
+// --- SISTEMA DE BUSCA DE ALIMENTOS ---
 const database = {
     "LOTE123": {
         produto: "Tomate Orgânico (Bandeja 500g)",
@@ -16,30 +36,23 @@ const database = {
     }
 };
 
-// Seleção de elementos do HTML
 const searchBtn = document.getElementById('search-btn');
 const batchInput = document.getElementById('batch-input');
 const resultContainer = document.getElementById('result-container');
 
-// Evento de clique do botão de busca
 searchBtn.addEventListener('click', () => {
     const inputCode = batchInput.value.trim().toUpperCase();
 
-    // Limpa estados anteriores
     resultContainer.classList.add('hidden');
     resultContainer.classList.remove('error');
 
-    // Valida se o campo está vazio
     if (inputCode === "") {
         alert("Por favor, digite um código de lote.");
         return;
     }
 
-    // Verifica se o lote existe na nossa base simulada
     if (database[inputCode]) {
         const info = database[inputCode];
-        
-        // Monta a estrutura de resposta positiva no HTML
         resultContainer.innerHTML = `
             <h3>🌾 Alimento Localizado!</h3>
             <ul>
@@ -51,7 +64,6 @@ searchBtn.addEventListener('click', () => {
             </ul>
         `;
     } else {
-        // Caso o código digitado esteja incorreto
         resultContainer.classList.add('error');
         resultContainer.innerHTML = `
             <h3>❌ Lote não encontrado</h3>
@@ -59,6 +71,5 @@ searchBtn.addEventListener('click', () => {
         `;
     }
 
-    // Mostra o container na tela
     resultContainer.classList.remove('hidden');
 });
